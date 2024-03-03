@@ -1,1 +1,1 @@
-## Homeworks in RTU MIREA:
+## Homeworks in RTU MIREA
