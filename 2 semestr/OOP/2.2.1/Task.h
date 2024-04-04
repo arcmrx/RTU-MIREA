@@ -21,4 +21,4 @@ private:
     void hiddenMethod();
 };
 
-#endif // TASK_H
+#endif
