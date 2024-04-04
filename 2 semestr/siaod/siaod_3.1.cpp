@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <cmath>
 
 typedef unsigned int typeitem;
@@ -7,7 +6,7 @@ typedef unsigned int typeitem;
 struct typeX
 {
     unsigned int size = 0;
-    std::vector<typeitem> array = {};
+    typeitem *array = nullptr;
 };
 
 int digitalRoot(int num)
@@ -28,11 +27,17 @@ int digitalRoot(int num)
 void fillArrayFromKeyboard(typeX &arr, unsigned int size)
 {
     std::cout << "Введите " << size << " чисел:\n";
+    arr.array = (typeitem *)malloc(size * sizeof(typeitem));
+    if (arr.array == nullptr)
+    {
+        std::cerr << "Ошибка выделения памяти!\n";
+        exit(1);
+    }
     for (unsigned int i = 0; i < size; ++i)
     {
         typeitem num;
         std::cin >> num;
-        arr.array.push_back(num);
+        arr.array[i] = num;
         arr.size++;
     }
 }
@@ -46,8 +51,13 @@ typeX formArrayWithSingleDigitRoots(const typeX &originalArray)
         int num = originalArray.array[i];
         if (digitalRoot(num) < 10)
         {
-            newArray.array.push_back(num);
-            newArray.size++;
+            newArray.array = (typeitem *)realloc(newArray.array, (newArray.size + 1) * sizeof(typeitem));
+            if (newArray.array == nullptr)
+            {
+                std::cerr << "Ошибка выделения памяти!\n";
+                exit(1);
+            }
+            newArray.array[newArray.size++] = num;
         }
     }
 
@@ -63,6 +73,13 @@ void printArray(const typeX &arr)
     std::cout << "\n";
 }
 
+void freeArray(typeX &arr)
+{
+    free(arr.array);
+    arr.array = nullptr;
+    arr.size = 0;
+}
+
 int main()
 {
     typeX originalArray;
@@ -76,6 +93,9 @@ int main()
 
     std::cout << "Новый массив с однозначными цифровыми корнями:\n";
     printArray(newArray);
+
+    freeArray(originalArray);
+    freeArray(newArray);
 
     return 0;
 }
