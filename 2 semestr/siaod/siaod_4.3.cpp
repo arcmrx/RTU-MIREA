@@ -1,87 +1,57 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
+
+using namespace std;
 
 struct Point
 {
-    double x;
-    double y;
+    double x, y;
 };
 
-void fillPointsVector(std::vector<Point> &points, int size)
+// Функция, вычисляющая площадь треугольника по трем точкам
+double triangleArea(const Point &A, const Point &B, const Point &C)
 {
-    points.resize(size);
-    std::cout << "Enter points:\n";
-    for (int i = 0; i < size; ++i)
-    {
-        std::cin >> points[i].x >> points[i].y;
-    }
+    return abs((A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y)) / 2.0);
 }
 
-bool isBalancedTriangle(const Point &p1, const Point &p2, const Point &p3, const std::vector<Point> &set1, const std::vector<Point> &set2)
+// Функция, проверяющая, лежит ли точка D внутри треугольника ABC
+bool isInsideTriangle(const Point &A, const Point &B, const Point &C, const Point &D)
 {
-    int set1Count = 0, set2Count = 0;
-    for (const Point &point : set1)
-    {
-        double area = 0.5 * ((p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y));
-        double area1 = 0.5 * ((point.x - p1.x) * (p2.y - p1.y) - (p2.x - p1.x) * (point.y - p1.y));
-        double area2 = 0.5 * ((p2.x - p1.x) * (point.y - p1.y) - (point.x - p1.x) * (p2.y - p1.y));
-        double area3 = 0.5 * ((point.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (point.y - p1.y));
-        if ((area1 >= 0 && area2 >= 0 && area3 >= 0) || (area1 <= 0 && area2 <= 0 && area3 <= 0))
-        {
-            ++set1Count;
-        }
-    }
-    for (const Point &point : set2)
-    {
-        double area = 0.5 * ((p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y));
-        double area1 = 0.5 * ((point.x - p1.x) * (p2.y - p1.y) - (p2.x - p1.x) * (point.y - p1.y));
-        double area2 = 0.5 * ((p2.x - p1.x) * (point.y - p1.y) - (point.x - p1.x) * (p2.y - p1.y));
-        double area3 = 0.5 * ((point.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (point.y - p1.y));
-        if ((area1 >= 0 && area2 >= 0 && area3 >= 0) || (area1 <= 0 && area2 <= 0 && area3 <= 0))
-        {
-            ++set2Count;
-        }
-    }
-    return set1Count == set2Count;
-}
-
-void findBalancedTriangle(const std::vector<Point> &points1, const std::vector<Point> &points2)
-{
-    int n = points1.size();
-    for (int i = 0; i < n - 2; ++i)
-    {
-        for (int j = i + 1; j < n - 1; ++j)
-        {
-            for (int k = j + 1; k < n; ++k)
-            {
-                if (isBalancedTriangle(points1[i], points1[j], points1[k], points1, points2))
-                {
-                    std::cout << "Found balanced triangle:\n";
-                    std::cout << "(" << points1[i].x << ", " << points1[i].y << "), ";
-                    std::cout << "(" << points1[j].x << ", " << points1[j].y << "), ";
-                    std::cout << "(" << points1[k].x << ", " << points1[k].y << ")\n";
-                    return;
-                }
-            }
-        }
-    }
-    std::cout << "No balanced triangle found.\n";
+    double ABC = triangleArea(A, B, C);
+    double ABD = triangleArea(A, B, D);
+    double ACD = triangleArea(A, C, D);
+    double BCD = triangleArea(B, C, D);
+    return (ABC == ABD + ACD + BCD);
 }
 
 int main()
 {
-    int size1, size2;
-    std::cout << "Enter the number of points in the first set: ";
-    std::cin >> size1;
-    std::cout << "Enter the number of points in the second set: ";
-    std::cin >> size2;
+    vector<Point> points1;
+    // Вводим координаты  точек
+    cout << "Введите кол-во точек первого множества: ";
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; ++i)
+    {
+        Point p;
+        cout << "Ввдите X" << i << " и Y" << i << ": ";
+        cin >> p.x >> p.y;
+        points1.push_back(p);
+    }
 
-    std::vector<Point> points1, points2;
-    fillPointsVector(points1, size1);
-    fillPointsVector(points2, size2);
+    Point A = points1[0];
+    Point B = points1[1];
+    Point C = points1[2];
+    Point D = {1, 1};
 
-    findBalancedTriangle(points1, points2);
+    if (isInsideTriangle(A, B, C, D))
+    {
+        cout << "D в ABC.\n";
+    }
+    else
+    {
+        cout << "D НЕ в ABC.\n";
+    }
 
     return 0;
 }
