@@ -1,13 +1,17 @@
 #include <iostream>
-#include <vector>
+
+struct typeitem
+{
+    int value;
+};
 
 struct typeX
 {
     unsigned int size = 0;
-    std::vector<int> array = {};
+    typeitem **array;
 };
 
-void printClockwise(const typeX &matrix, int n)
+void printClockwise(typeX matrix, int n)
 {
     int top = 0, bottom = n - 1;
     int left = 0, right = n - 1;
@@ -16,13 +20,13 @@ void printClockwise(const typeX &matrix, int n)
     {
         for (int i = left; i <= right; ++i)
         {
-            std::cout << matrix.array[top * n + i] << " ";
+            std::cout << matrix.array[top][i].value << " ";
         }
         ++top;
 
         for (int i = top; i <= bottom; ++i)
         {
-            std::cout << matrix.array[i * n + right] << " ";
+            std::cout << matrix.array[i][right].value << " ";
         }
         --right;
 
@@ -30,7 +34,7 @@ void printClockwise(const typeX &matrix, int n)
         {
             for (int i = right; i >= left; --i)
             {
-                std::cout << matrix.array[bottom * n + i] << " ";
+                std::cout << matrix.array[bottom][i].value << " ";
             }
             --bottom;
         }
@@ -39,24 +43,39 @@ void printClockwise(const typeX &matrix, int n)
         {
             for (int i = bottom; i >= top; --i)
             {
-                std::cout << matrix.array[i * n + left] << " ";
+                std::cout << matrix.array[i][left].value << " ";
             }
             ++left;
         }
     }
 }
 
-typeX inputMatrix(int n)
+void inputMatrix(typeX &matrix, int n)
 {
-    typeX matrix;
-    matrix.size = n * n;
-    matrix.array.resize(n * n);
-    std::cout << "Введите элементы матрицы:\n";
-    for (int i = 0; i < n * n; ++i)
+    matrix.array = new typeitem *[n];
+    for (int i = 0; i < n; ++i)
     {
-        std::cin >> matrix.array[i];
+        matrix.array[i] = new typeitem[n];
     }
-    return matrix;
+
+    std::cout << "Введите элементы матрицы:\n";
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            std::cin >> matrix.array[i][j].value;
+        }
+    }
+    matrix.size = n * n;
+}
+
+void deleteMatrix(typeX &matrix, int n)
+{
+    for (int i = 0; i < n; ++i)
+    {
+        delete[] matrix.array[i];
+    }
+    delete[] matrix.array;
 }
 
 int main()
@@ -65,10 +84,14 @@ int main()
     std::cout << "Введите размер квадратной матрицы: ";
     std::cin >> n;
 
-    typeX matrix = inputMatrix(n);
+    typeX matrix;
+
+    inputMatrix(matrix, n);
 
     std::cout << "Элементы матрицы по часовой стрелке начиная с первой строки:\n";
     printClockwise(matrix, n);
+
+    deleteMatrix(matrix, n);
 
     return 0;
 }
