@@ -105,5 +105,5 @@ void menu()
 int main()
 {
     menu(); // Запуск меню
-    return 0;
+    return (0);
 }
