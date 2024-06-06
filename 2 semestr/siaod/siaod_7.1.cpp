@@ -137,13 +137,6 @@ Node *createSortedDigitList(Node *head)
 // Тестирование
 int main()
 {
-    /*
-    1) aaabbccccde1234555
-    2) 112233445566778899
-    3) abc123321
-    4) zzzzzzz
-    5) 12345
-    */
 
     // Установка языка и очистка терминала
     setlocale(LC_ALL, "");        // Устанавливаем локаль (настройки языка)
