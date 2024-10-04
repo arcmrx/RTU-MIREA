@@ -1,3 +1,4 @@
+package Practice2;
 public class Car {
     private String model;
     private String license;
