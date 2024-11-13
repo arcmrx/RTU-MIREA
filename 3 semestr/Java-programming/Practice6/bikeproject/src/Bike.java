@@ -2,9 +2,9 @@ package src;
 
 public class Bike implements BikeParts {
 
-	private String handleBars, frame, tyres, seatType;
-	private int NumGears;
-	private final String make;
+	private String handleBars, frame, tyres, seatType; // руль, рама, шины, сиденье
+	private int NumGears; // передачи
+	private final String make; // создатель
 
 	public Bike() {
 		this.make = BikeParts.companyName;

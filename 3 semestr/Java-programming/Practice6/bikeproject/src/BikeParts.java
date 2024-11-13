@@ -1,7 +1,7 @@
 package src;
 
 public interface BikeParts {
-    String companyName = "Oracle Cycles"; 
+    String companyName = "Company"; 
 
     String getCompanyName(); // Компания производитель
 }

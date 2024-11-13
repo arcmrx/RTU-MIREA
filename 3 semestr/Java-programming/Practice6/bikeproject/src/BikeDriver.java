@@ -14,8 +14,9 @@ public class BikeDriver {
 		bike3.printDescription();
 		bike4.printDescription();
 
-		bike1.setPostHeight(20); // Обновляем высоту столба для bike1
+		bike1.setPostHeight(20); // Обновляем высоту сиденья для bike1
 
 		System.out.println("\nUpdate Post Height bike1: " + bike1.getPostHeight());
+		bike1.printDescription();
 	}
 }

@@ -2,8 +2,8 @@ package src;
 
 public class MountainBike extends Bike implements MountainParts {
 
-	private String suspension, type;
-	private int frameSize;
+	private String suspension, type; // подвеска, тип
+	private int frameSize; // разиер рамы
 
 	public MountainBike() {
 		this("Bull Horn", "Hardtail", "Maxxis", "dropper", 27, "RockShox XC32", "Pro", 19);
