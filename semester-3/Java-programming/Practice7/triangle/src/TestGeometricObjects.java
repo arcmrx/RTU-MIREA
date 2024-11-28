@@ -15,6 +15,8 @@ public class TestGeometricObjects {
             System.out.print("Треугольник закрашен? (true/false): ");
             boolean filled = input.nextBoolean();
 
+            input.close();
+
             Triangle triangle = new Triangle(side1, side2, side3);
             triangle.setColor(color);
             triangle.setFilled(filled);

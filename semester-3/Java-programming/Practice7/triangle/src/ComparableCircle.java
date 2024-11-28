@@ -1,3 +1,4 @@
+@SuppressWarnings("unused")
 public class ComparableCircle extends Circle implements Comparable<GeometricObject> {
     public ComparableCircle(double radius) {
         super(radius);

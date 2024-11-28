@@ -6,8 +6,9 @@ public class TestTask1 {
             Scanner sc = new Scanner(System.in);
             System.out.println("Введите номер месяца");
             int month = sc.nextInt();
-            task1 task;
-            task = new task1(month);
+            sc.close();
+            @SuppressWarnings("unused")
+            task1 task = new task1(month);
             String[] months = {"январь", "февраль", "март", "апрель", "май",
                     "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"};
             int[] dom = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
