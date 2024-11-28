@@ -17,7 +17,7 @@
 Для того чтобы запустить программу, используйте следующую команду:
 ```
 python dependency_visualizer.py \
-    --visualizer-path /opt/homebrew/bin/mmdc \
+    --visualizer-path /path/to/mmdc \
     --package-name requests \
     --output-file graph.png \
     --repo-url https://github.com/psf/requests
