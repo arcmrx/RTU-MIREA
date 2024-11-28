@@ -4,6 +4,7 @@ public class GenericStack<E> {
     private E[] list;
     private int size = 0;
 
+    @SuppressWarnings("unchecked")
     public GenericStack(int size) {
         list = (E[]) new Object[size];
     }
@@ -27,6 +28,7 @@ public class GenericStack<E> {
     }
 
     private void doubleList() {
+        @SuppressWarnings("unchecked")
         E[] newList = (E[]) new Object[list.length * 2];
         System.arraycopy(list, 0, newList, 0, list.length);
         list = newList;
