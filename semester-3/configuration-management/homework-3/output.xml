@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<results>
+  <result>12</result>
+  <result>6</result>
+  <result>75</result>
+  <result>5</result>
+  <result>10</result>
+  <array>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+  </array>
+  <array>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>10</item>
+  </array>
+</results>
