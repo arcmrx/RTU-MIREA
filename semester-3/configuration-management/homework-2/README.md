@@ -17,10 +17,10 @@
 Для того чтобы запустить программу, используйте следующую команду:
 ```
 python dependency_visualizer.py \
-    --visualizer-path /path/to/mmdc \
+    --visualizer-path /opt/homebrew/bin/mmdc \
     --package-name requests \
     --output-file graph.png \
-    --repo-url https://github.com/psf/requests
+    --repo-url https://pypi.org/project/requests/
 ```
 Где:
 
@@ -42,3 +42,25 @@ pip show requests
 
 1. Убедитесь, что у вас установлен [Mermaid CLI](https://github.com/mermaid-js/mermaid-cli) для генерации графов.
 2. Убедитесь, что у вас установлен пакет pip и все необходимые библиотеки Python.
+
+**Пример использования**
+
+```
+python dependency_visualizer.py \
+    --visualizer-path /Users/arcmrx/.npm-global/bin/mmdc \
+    --package-name django \  
+    --output-file graph.png \ 
+    --repo-url https://pypi.org/project/Django/
+```
+
+![alt text](graph.png)
+
+```
+python dependency_visualizer.py \
+    --visualizer-path /Users/arcmrx/.npm-global/bin/mmdc \
+    --package-name requests \
+    --output-file graph1.png \
+    --repo-url https://pypi.org/project/requests/
+```
+
+![alt text](graph1.png)
