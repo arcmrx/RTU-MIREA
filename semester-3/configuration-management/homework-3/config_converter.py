@@ -6,7 +6,6 @@ from typing import Union, List
 
 
 def parse_constant(line: str):
-    """Парсит строку с объявлением константы."""
     name, value = line.split(" is ", 1)
     name = name.strip()
     if value.startswith("(") and value.endswith(")"):
@@ -17,7 +16,6 @@ def parse_constant(line: str):
 
 
 def resolve_constants(value, constants):
-    """Рекурсивно разрешает константы в массиве."""
     if isinstance(value, tuple):
         resolved = []
         for el in value:
@@ -44,7 +42,6 @@ def resolve_constants(value, constants):
 
 
 def evaluate_expression(expression: str, constants: dict):
-    """Вычисляет выражение вида ${константа константа операция}."""
     match = re.match(r"\$\{(\w+)\s+(\w+)\s+([\w+\-*/modmin()]+)\}", expression)
     if not match:
         raise ValueError(f"Invalid expression: {expression}")
@@ -77,7 +74,6 @@ def evaluate_expression(expression: str, constants: dict):
 
 
 def process_input(input_lines: List[str]) -> List[Union[int, tuple]]:
-    """Обрабатывает входные строки и возвращает результат."""
     constants = {}
     results = []
 
@@ -117,7 +113,6 @@ def process_input(input_lines: List[str]) -> List[Union[int, tuple]]:
 
 
 def write_output(output_file: str, results: List[Union[int, tuple]]):
-    """Записывает результаты в XML-файл с красивым форматированием."""
     root = ET.Element("results")
 
     for result in results:
