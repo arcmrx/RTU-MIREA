@@ -1,0 +1,6 @@
+test1 is 5
+test2 is 10
+test3 is 15
+test4 is ( 1, 2, 3, 4 )
+${test1 7 +}
+${test2 4 -}

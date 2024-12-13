@@ -16,6 +16,33 @@ def parse_constant(line: str):
     return name, value
 
 
+def resolve_constants(value, constants):
+    """Рекурсивно разрешает константы в массиве."""
+    if isinstance(value, tuple):
+        resolved = []
+        for el in value:
+            if isinstance(el, str) and el.startswith("${") and el.endswith("}"):
+                key = el[2:-1].strip()
+                if key not in constants:
+                    raise ValueError(f"Unresolved constant in array: {el}")
+                resolved.append(constants[key])
+            elif el in constants:
+                resolved.append(constants[el])
+            else:
+                try:
+                    resolved.append(int(el))
+                except ValueError:
+                    raise ValueError(
+                        f"Unresolved constant or invalid element in array: {el}")
+        return tuple(resolved)
+    if isinstance(value, str) and value.startswith("${") and value.endswith("}"):
+        key = value[2:-1].strip()
+        if key not in constants:
+            raise ValueError(f"Unresolved constant: {value}")
+        return constants[key]
+    return value
+
+
 def evaluate_expression(expression: str, constants: dict):
     """Вычисляет выражение вида ${константа константа операция}."""
     match = re.match(r"\$\{(\w+)\s+(\w+)\s+([\w+\-*/modmin()]+)\}", expression)
@@ -66,18 +93,25 @@ def process_input(input_lines: List[str]) -> List[Union[int, tuple]]:
             results.append(result)
 
         elif line.startswith("(") and line.endswith(")"):
-            results.append(tuple(map(int, re.findall(r"\d+", line))))
+            elements = re.findall(r"\$\{[^}]+\}|\w+", line)
+            array = []
+            for el in elements:
+                if el.startswith("${"):
+
+                    resolved = resolve_constants(el, constants)
+                    if resolved == el:
+                        raise ValueError(f"Unresolved constant in array: {el}")
+                    array.append(resolved)
+                elif el.isdigit():
+
+                    array.append(int(el))
+                else:
+
+                    raise ValueError(f"Invalid element in array: {el}")
+            results.append(tuple(array))
 
         else:
-            match = re.match(
-                r"\(\s*(.*)\s*\)\s*\${(\w+)\s+(\w+)\s+([+])\}", line)
-            if match:
-                array_str, array_name, constant_name, operation = match.groups()
-                array = tuple(map(int, re.findall(r"\d+", array_str)))
-                constant = constants.get(constant_name)
-                if operation == '+':
-                    array = tuple(list(array) + [constant])
-                results.append(array)
+            raise ValueError(f"Invalid syntax: {line}")
 
     return results
 
@@ -88,11 +122,17 @@ def write_output(output_file: str, results: List[Union[int, tuple]]):
 
     for result in results:
         if isinstance(result, int):
-            ET.SubElement(root, "result").text = str(result)
+            ET.SubElement(root, "item").text = str(result)
         elif isinstance(result, tuple):
             array_elem = ET.SubElement(root, "array")
             for num in result:
-                ET.SubElement(array_elem, "item").text = str(num)
+                if isinstance(num, tuple):
+                    nested_array_elem = ET.SubElement(array_elem, "array")
+                    for nested_num in num:
+                        ET.SubElement(nested_array_elem,
+                                      "item").text = str(nested_num)
+                else:
+                    ET.SubElement(array_elem, "item").text = str(num)
 
     rough_string = ET.tostring(root, encoding="utf-8")
     parsed = minidom.parseString(rough_string)
@@ -115,7 +155,11 @@ def main():
     with open(args.input_file, "r", encoding="utf-8") as f:
         input_lines = f.readlines()
 
-    results = process_input(input_lines)
+    try:
+        results = process_input(input_lines)
+    except ValueError as e:
+        print(f"Error: {e}")
+        return
 
     write_output(args.output_file, results)
 

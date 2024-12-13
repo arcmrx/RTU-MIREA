@@ -48,39 +48,41 @@ python config_converter.py --input-file input.txt --output-file output.xml
 
 ### Входной файл
 
-Пример файла `input.txt`:
+Пример файла `input3.txt`:
 
 ```
 test1 is 5
 test2 is 10
 test3 is 15
 test4 is ( 1, 2, 3, 4 )
-${test1 7 +}
-${test2 4 -}
-${test3 test1 *}
-${test3 test2 mod()}
-${test3 test2 min()}
 ( 1, 2, 3, 4 )
+(${test1}, ${test2}, ${test3}, ${test4})
 ${test4 test2 +}
 ```
 
 ### Выходной файл
 
-Пример содержимого `output.xml`:
+Пример содержимого `output3.xml`:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <results>
-  <result>12</result>
-  <result>6</result>
-  <result>75</result>
-  <result>5</result>
-  <result>10</result>
   <array>
     <item>1</item>
     <item>2</item>
     <item>3</item>
     <item>4</item>
+  </array>
+  <array>
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <array>
+      <item>1</item>
+      <item>2</item>
+      <item>3</item>
+      <item>4</item>
+    </array>
   </array>
   <array>
     <item>1</item>
@@ -98,4 +100,8 @@ ${test4 test2 +}
 
 ```
 ValueError: Unsupported operation: unknown_op
+```
+
+```
+Error: Invalid element in array: test1
 ```
